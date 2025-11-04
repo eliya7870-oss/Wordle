@@ -7,7 +7,7 @@ function GameBoard({ length, height }: { length: number; height: number }) {
       style={{ "--columns": length } as React.CSSProperties}
     >
       {Array.from({ length: height }, () => (
-        <Row length={length} />
+        <Row word={"funny"} length={length} />
       ))}
     </div>
   );
