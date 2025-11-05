@@ -1,3 +1,4 @@
+import { checkWord } from "../../functions/functions";
 import Tile from "../Tile/Tile";
 import "./Row.css";
 
@@ -12,15 +13,8 @@ function Row({
   done: boolean;
   solution?: string;
 }) {
-  return Array.from({ length }, (_, i) => (
-    <Tile
-      key={i}
-      status={
-        done && word ? (word[i] === solution[i] ? "correct" : "wrong") : "empty"
-      }
-      letter={word && word[i] ? word[i] : null}
-    />
-  ));
+  const result = checkWord(word, solution, done);
+  return Array.from({ length }, (_, i) => <Tile key={i} result={result[i]} />);
 }
 
 export default Row;

@@ -1,16 +1,27 @@
 import "./Tile.css";
 
-function Tile({ letter, status }: { letter: string | null; status: string }) {
+function Tile({
+  result,
+}: {
+  result: { letter: string | null; status: string };
+}) {
   return (
     <div
       className="tile"
       style={
         {
-          "--color": status === "correct" ? "green" : "none",
+          "--color":
+            result.status === "green"
+              ? "#538d4e"
+              : result.status === "yellow"
+              ? "#b59f3b"
+              : result.status === "done"
+              ? "#3a3a3c"
+              : "none",
         } as React.CSSProperties
       }
     >
-      {letter}
+      {result.letter}
     </div>
   );
 }
