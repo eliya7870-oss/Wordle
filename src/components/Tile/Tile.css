@@ -1,8 +1,8 @@
 .tile {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border: 2px solid #3a3a3c;
-  font-size: 65px;
+  font-size: 54px;
   text-align: center;
   background-color: var(--color);
   animation: flip 700ms;

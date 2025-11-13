@@ -4,6 +4,7 @@ import "./GameBoard.css";
 import { useAtom, useSetAtom } from "jotai";
 import {
   gameOverAtom,
+  modalOpenAtom,
   solutionAtom,
   statsAtom,
   triesAtom,
@@ -15,6 +16,7 @@ function GameBoard({ length, height }: { length: number; height: number }) {
   const [word, setWord] = useAtom(wordAtom);
   const [tries, setTries] = useAtom(triesAtom);
   const [gameOver, setGameOver] = useAtom(gameOverAtom);
+  const setModalOpen = useSetAtom(modalOpenAtom);
   const setStats = useSetAtom(statsAtom);
   const [solution] = useAtom(solutionAtom);
 
@@ -26,6 +28,7 @@ function GameBoard({ length, height }: { length: number; height: number }) {
         currentStreak: 0,
       }));
       setGameOver(true);
+      setModalOpen(true);
     }
   }, [tries.length, gameOver, setStats, setGameOver]);
 
@@ -35,6 +38,7 @@ function GameBoard({ length, height }: { length: number; height: number }) {
       if (e.key === "Enter" && word.length === 5) {
         if (word === solution) {
           setGameOver(true);
+          setModalOpen(true);
           setStats((prevstats) => ({
             ...prevstats,
             played: prevstats.played + 1,
@@ -64,7 +68,16 @@ function GameBoard({ length, height }: { length: number; height: number }) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [word, gameOver, solution, setWord, setTries, setGameOver, setStats]);
+  }, [
+    word,
+    gameOver,
+    solution,
+    setWord,
+    setTries,
+    setGameOver,
+    setStats,
+    setModalOpen,
+  ]);
 
   return (
     <div

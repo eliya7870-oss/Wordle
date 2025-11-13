@@ -2,6 +2,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import "./GameOverModal.css";
 import {
   gameOverAtom,
+  modalOpenAtom,
   solutionAtom,
   statsAtom,
   triesAtom,
@@ -10,18 +11,19 @@ import { ArrowClockwiseIcon, XIcon } from "@phosphor-icons/react";
 import { WORDS } from "../../common/Constants";
 function GameOverModal() {
   const [gameOver, setGameOver] = useAtom(gameOverAtom);
+  const [modalOpen, setModalOpen] = useAtom(modalOpenAtom);
   const setTries = useSetAtom(triesAtom);
   const stats = useAtomValue(statsAtom);
   const setSolution = useSetAtom(solutionAtom);
   return (
-    gameOver && (
+    modalOpen && (
       <div className="modal-overlay">
         <div className="modal">
           <XIcon
             className="x-icon"
             size={32}
             onClick={() => {
-              setGameOver(false);
+              setModalOpen(false);
             }}
           />
           <h1 className="header">statistics</h1>
@@ -43,17 +45,20 @@ function GameOverModal() {
               <div className="label">Max streak</div>
             </div>
           </div>
-          <button
-            className="retry-button"
-            onClick={() => {
-              setTries([]);
-              setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
-              setGameOver(false);
-            }}
-          >
-            <ArrowClockwiseIcon size={32} />
-            try again
-          </button>
+          {gameOver && (
+            <button
+              className="retry-button"
+              onClick={() => {
+                setTries([]);
+                setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
+                setGameOver(false);
+                setModalOpen(false);
+              }}
+            >
+              <ArrowClockwiseIcon size={32} />
+              try again
+            </button>
+          )}
         </div>
       </div>
     )

@@ -15,3 +15,4 @@ export const solutionAtom = atom<string>(
   WORDS[Math.floor(Math.random() * WORDS.length)]
 );
 export const wordAtom = atom("");
+export const modalOpenAtom = atom<boolean>(false);
