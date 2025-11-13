@@ -3,12 +3,12 @@
   width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
   .key-row {
     display: flex;
     flex: 1;
     .key {
-      background-color: grey;
+      background-color: var(--color);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,7 +16,7 @@
       border-radius: 5px;
       flex: 1;
       font-size: 20px;
-      margin-right: 5px;
+      margin-right: 6px;
     }
     .last {
       margin-right: 0px;

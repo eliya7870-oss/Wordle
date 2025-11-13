@@ -5,4 +5,20 @@
   font-size: 65px;
   text-align: center;
   background-color: var(--color);
+  animation: flip 700ms;
 }
+/* @keyframes flip {
+  0% {
+    transform: scaleY(1);
+  }
+
+  50% {
+    background: white;
+    transform: scaleY(0);
+  }
+
+  100% {
+    transform: scaleY(1);
+    background: green;
+  }
+} */

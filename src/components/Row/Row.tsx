@@ -1,21 +1,24 @@
 import { useAtomValue } from "jotai";
-import { checkWord } from "../../functions/functions";
 import Tile from "../Tile/Tile";
 import "./Row.css";
-import { solutionAtom } from "../../store/atoms";
+import { triesAtom, wordAtom } from "../../store/atoms";
 
-function Row({
-  length,
-  word,
-  done,
-}: {
-  length: number;
-  word: string | null;
-  done: boolean;
-}) {
-  const solution = useAtomValue(solutionAtom);
-  const result = checkWord(word, solution, done);
-  return Array.from({ length }, (_, i) => <Tile key={i} result={result[i]} />);
+function Row({ length, index }: { length: number; index: number }) {
+  const tries = useAtomValue(triesAtom);
+  const word = useAtomValue(wordAtom);
+  const formatted = Array.from({ length: 5 }, (_, i) => ({
+    letter: word.length > i ? word[i] : null,
+    status: "empty",
+  }));
+  const result =
+    index === tries.length
+      ? formatted
+      : index <= tries.length - 1
+      ? tries[index]
+      : Array.from({ length: 5 }, () => ({ letter: null, status: "empty" }));
+  return Array.from({ length }, (_, i) => (
+    <Tile key={`${index},${i}`} result={result[i]} />
+  ));
 }
 
 export default Row;

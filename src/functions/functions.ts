@@ -2,7 +2,7 @@ export function checkWord(
   word: string | null,
   solution: string,
   done: boolean
-) {
+): { letter: string; status: "green" | "yellow" | "empty" | "done" }[] {
   const result = Array.from({ length: 5 }, (_, i) => ({
     letter: word ? word[i] : "",
     status: "done" as "green" | "yellow" | "empty" | "done",
@@ -39,3 +39,13 @@ export function checkWord(
 
   return result;
 }
+export const handleButtonClick = (key: string) => {
+  const event = new KeyboardEvent("keydown", {
+    key: key,
+    code: key === "Backspace" ? "Backspace" : `Key${key}`,
+    bubbles: true,
+    cancelable: true,
+  });
+
+  window.dispatchEvent(event);
+};

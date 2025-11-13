@@ -5,6 +5,7 @@ function Tile({
 }: {
   result: { letter: string | null; status: string };
 }) {
+  console.log(result);
   return (
     <div
       className="tile"

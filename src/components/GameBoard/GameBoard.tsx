@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Row from "../Row/Row";
 import "./GameBoard.css";
 import { useAtom, useSetAtom } from "jotai";
@@ -7,9 +7,12 @@ import {
   solutionAtom,
   statsAtom,
   triesAtom,
+  wordAtom,
 } from "../../store/atoms";
+import { checkWord } from "../../functions/functions";
+
 function GameBoard({ length, height }: { length: number; height: number }) {
-  const [word, setWord] = useState("");
+  const [word, setWord] = useAtom(wordAtom);
   const [tries, setTries] = useAtom(triesAtom);
   const [gameOver, setGameOver] = useAtom(gameOverAtom);
   const setStats = useSetAtom(statsAtom);
@@ -24,23 +27,26 @@ function GameBoard({ length, height }: { length: number; height: number }) {
       }));
       setGameOver(true);
     }
+  }, [tries.length, gameOver, setStats, setGameOver]);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (gameOver) return;
       if (e.key === "Enter" && word.length === 5) {
-        if (word == solution) {
+        if (word === solution) {
           setGameOver(true);
           setStats((prevstats) => ({
             ...prevstats,
             played: prevstats.played + 1,
             wins: prevstats.wins + 1,
             currentStreak: prevstats.currentStreak + 1,
-            maxStreak:
-              prevstats.currentStreak == prevstats.maxStreak
-                ? prevstats.maxStreak + 1
-                : prevstats.maxStreak,
+            maxStreak: Math.max(
+              prevstats.maxStreak,
+              prevstats.currentStreak + 1
+            ),
           }));
         }
-        setTries((prev) => [...prev, word]);
+        setTries((prev) => [...prev, checkWord(word, solution, true)]);
         setWord("");
       } else {
         setWord((prev) => {
@@ -58,22 +64,18 @@ function GameBoard({ length, height }: { length: number; height: number }) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [word, gameOver]);
+  }, [word, gameOver, solution, setWord, setTries, setGameOver, setStats]);
+
   return (
     <div
       className="board-container"
       style={{ "--columns": length } as React.CSSProperties}
     >
       {Array.from({ length: height }, (_, i) => (
-        <Row
-          word={
-            tries.length < i + 1 ? (i === tries.length ? word : "") : tries[i]
-          }
-          done={tries.length >= i + 1}
-          length={length}
-        />
+        <Row key={i} index={i} length={length} />
       ))}
     </div>
   );
 }
+
 export default GameBoard;

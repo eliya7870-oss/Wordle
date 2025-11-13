@@ -2,7 +2,9 @@ import { atom } from "jotai";
 import { WORDS } from "../common/Constants";
 
 export const gameOverAtom = atom<boolean>(false);
-export const triesAtom = atom<string[]>([]);
+export const triesAtom = atom<
+  { letter: string; status: "green" | "yellow" | "empty" | "done" }[][]
+>([]);
 export const statsAtom = atom({
   played: 0,
   wins: 0,
@@ -12,3 +14,4 @@ export const statsAtom = atom({
 export const solutionAtom = atom<string>(
   WORDS[Math.floor(Math.random() * WORDS.length)]
 );
+export const wordAtom = atom("");
