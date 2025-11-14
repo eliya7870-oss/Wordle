@@ -10,6 +10,7 @@ export const statsAtom = atom({
   wins: 0,
   currentStreak: 0,
   maxStreak: 0,
+  spread: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
 });
 export const solutionAtom = atom<string>(
   WORDS[Math.floor(Math.random() * WORDS.length)]

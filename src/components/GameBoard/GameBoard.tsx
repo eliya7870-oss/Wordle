@@ -30,12 +30,16 @@ function GameBoard({ length, height }: { length: number; height: number }) {
       setGameOver(true);
       setModalOpen(true);
     }
-  }, [tries.length, gameOver, setStats, setGameOver]);
+  }, [tries.length, gameOver, setStats, setGameOver, setModalOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (gameOver) return;
       if (e.key === "Enter" && word.length === 5) {
+        const newTries = [...tries, checkWord(word, solution, true)];
+        setTries(newTries);
+        setWord("");
+
         if (word === solution) {
           setGameOver(true);
           setModalOpen(true);
@@ -48,10 +52,23 @@ function GameBoard({ length, height }: { length: number; height: number }) {
               prevstats.maxStreak,
               prevstats.currentStreak + 1
             ),
+            spread: {
+              ...prevstats.spread,
+              [newTries.length]:
+                prevstats.spread[
+                  newTries.length as keyof typeof prevstats.spread
+                ] + 1,
+            },
+          }));
+        } else if (newTries.length >= 6) {
+          setGameOver(true);
+          setModalOpen(true);
+          setStats((prevstats) => ({
+            ...prevstats,
+            played: prevstats.played + 1,
+            currentStreak: 0,
           }));
         }
-        setTries((prev) => [...prev, checkWord(word, solution, true)]);
-        setWord("");
       } else {
         setWord((prev) => {
           if (e.key === "Backspace") return prev.slice(0, -1);
@@ -72,6 +89,7 @@ function GameBoard({ length, height }: { length: number; height: number }) {
     word,
     gameOver,
     solution,
+    tries,
     setWord,
     setTries,
     setGameOver,
